@@ -26,7 +26,7 @@ window.addEventListener("DOMContentLoaded", () => {
   open.addEventListener("click", openCart);
   close.addEventListener("click", closeCart);
 
-  goodsBtn.forEach(function(btn, i) {
+  goodsBtn.forEach(function (btn, i) {
     btn.addEventListener("click", () => {
       let item = products[i].cloneNode(true);
       let trigger = item.querySelector("button");
@@ -49,7 +49,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   function sliceTitle() {
-    titles.forEach(function(item) {
+    titles.forEach(function (item) {
       if (item.textContent.length < 70) {
         return;
       } else {
@@ -60,19 +60,20 @@ window.addEventListener("DOMContentLoaded", () => {
   sliceTitle();
 
   function showConfirm() {
-    confirm.style.display = "block";
-    let counter = 100;
-    const id = setInterval(frame, 10);
-
-    function frame() {
-      if (counter === 10) {
-        clearInterval(id);
-        confirm.style.display = "none";
-      } else {
-        counter--;
-        confirm.style.transform = `translateY(-${counter}px)`;
-        confirm.style.opacity = `.${counter}`;
-      }
+    if (checkAnimation(confirm) === "none") {
+      confirm.style.display = "block";
+      let counter = 100;
+      const frame = function () {
+        if (counter === 10) {
+          clearInterval(id);
+          confirm.style.display = "none";
+        } else {
+          counter--;
+          confirm.style.transform = `translateY(-${counter}px)`;
+          confirm.style.opacity = `.${counter}`;
+        }
+      };
+      const id = window.setInterval(frame, 10);
     }
   }
 
@@ -91,7 +92,7 @@ window.addEventListener("DOMContentLoaded", () => {
       ".cart__wrapper>.goods__item>.goods__price>span"
     );
     let total = 0;
-    prices.forEach(function(item) {
+    prices.forEach(function (item) {
       total += +item.textContent;
     });
     totalCost.textContent = total;
@@ -99,7 +100,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function removeFromCart() {
     const removeBtn = cartWrapper.querySelectorAll(".goods__item-remove");
-    removeBtn.forEach(function(btn) {
+    removeBtn.forEach(function (btn) {
       btn.addEventListener("click", () => {
         btn.parentElement.remove();
         calcGoods(0);
@@ -107,4 +108,16 @@ window.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
+
+  function checkAnimation(element) {
+    const style = window.getComputedStyle(element);
+    let elemStyle = style.getPropertyValue('display');
+    return elemStyle;
+  }
+// Json DB
+  fetch('https://jsonplaceholder.typicode.com/todos/1') // обещание
+    .then(response => response.json())
+    .then(json => console.log(json));
+
+
 });
